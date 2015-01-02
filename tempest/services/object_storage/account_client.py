@@ -86,7 +86,6 @@ class AccountClient(rest_client.RestClient):
         url = ''
         if params:
             url = '?%s%s' % (url, urllib.urlencode(params))
-
         resp, body = self.post(url, headers=headers, body=data)
         self.expected_success([200, 204], resp.status)
         return resp, body

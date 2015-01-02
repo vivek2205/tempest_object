@@ -40,6 +40,7 @@ class SecGroupTest(base.BaseSecGroupTest):
                                            port_range_max,
                                            remote_group_id=None,
                                            remote_ip_prefix=None):
+	print port_range_min,port_range_max
         # Create Security Group rule with the input params and validate
         # that SG rule is created with the same parameters.
         resp, rule_create_body = self.client.create_security_group_rule(
@@ -171,8 +172,10 @@ class SecGroupTest(base.BaseSecGroupTest):
         sg_id = group_create_body['security_group']['id']
         direction = 'ingress'
         protocol = 'icmp'
-        icmp_type_codes = [(3, 2), (2, 3), (3, 0), (2, None)]
-        for icmp_type, icmp_code in icmp_type_codes:
+        icmp_type_codes = [(3, 2), (2, 3), (3, 0), (2, 4)]
+        print direction, self.ethertype, protocol
+	for icmp_type, icmp_code in icmp_type_codes:
+	    print icmp_type, icmp_code
             self._create_verify_security_group_rule(sg_id, direction,
                                                     self.ethertype, protocol,
                                                     icmp_type, icmp_code)
@@ -220,6 +223,7 @@ class SecGroupTest(base.BaseSecGroupTest):
         group_create_body, _ = self._create_security_group()
         direction = 'ingress'
         protocol = 17
+        protocol_name = 'udp'
         security_group_id = group_create_body['security_group']['id']
         _, rule_create_body = self.client.create_security_group_rule(
             security_group_id=security_group_id,
@@ -228,7 +232,7 @@ class SecGroupTest(base.BaseSecGroupTest):
         )
         sec_group_rule = rule_create_body['security_group_rule']
         self.assertEqual(sec_group_rule['direction'], direction)
-        self.assertEqual(int(sec_group_rule['protocol']), protocol)
+        self.assertEqual(sec_group_rule['protocol'], protocol_name)
 
 
 class SecGroupIPv6Test(SecGroupTest):

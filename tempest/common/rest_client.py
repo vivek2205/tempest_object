@@ -471,7 +471,6 @@ class RestClient(object):
 
     def _error_checker(self, method, url,
                        headers, body, resp, resp_body):
-
         # NOTE(mtreinish): Check for httplib response from glance_http. The
         # object can't be used here because importing httplib breaks httplib2.
         # If another object from a class not imported were passed here as
@@ -496,7 +495,7 @@ class RestClient(object):
         # APIs. These are the return content types that Glance api v1
         # (and occasionally swift) are using.
         TXT_ENC = ['text/plain', 'text/html', 'text/html; charset=utf-8',
-                   'text/plain; charset=utf-8']
+                   'text/plain; charset=utf-8', 'application/octet-stream']
         XML_ENC = ['application/xml', 'application/xml; charset=utf-8']
 
         if ctype.lower() in JSON_ENC or ctype.lower() in XML_ENC:
@@ -506,7 +505,7 @@ class RestClient(object):
         else:
             raise exceptions.InvalidContentType(str(resp.status))
 
-        if resp.status == 401 or resp.status == 403:
+        if resp.status == 401 or resp.status == 403 or resp.status == 405:
             raise exceptions.Unauthorized(resp_body)
 
         if resp.status == 404:

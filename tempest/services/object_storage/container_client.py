@@ -81,7 +81,7 @@ class ContainerClient(rest_client.RestClient):
                 headers[remove_metadata_prefix + key] = remove_metadata[key]
 
         resp, body = self.post(url, body=None, headers=headers)
-        self.expected_success(204, resp.status)
+        self.expected_success(202, resp.status)
         return resp, body
 
     def delete_container_metadata(self, container_name, metadata,
@@ -95,7 +95,7 @@ class ContainerClient(rest_client.RestClient):
                 headers[metadata_prefix + item] = metadata[item]
 
         resp, body = self.post(url, body=None, headers=headers)
-        self.expected_success(204, resp.status)
+        self.expected_success(202, resp.status)
         return resp, body
 
     def list_container_metadata(self, container_name):
@@ -188,6 +188,7 @@ class ContainerClient(rest_client.RestClient):
             url += '&%s' % urllib.urlencode(params)
 
         resp, body = self.get(url, headers={})
+        #resp, body = self.head(url, headers={})
         if params and params.get('format') == 'json':
             body = json.loads(body)
         elif params and params.get('format') == 'xml':

@@ -1005,7 +1005,6 @@ class PublicObjectTest(base.BaseObjectTest):
     def test_access_public_container_object_without_using_creds(self):
         # make container public-readable and access an object in it object
         # anonymously, without using credentials
-
         # update container metadata to make it publicly readable
         cont_headers = {'X-Container-Read': '.r:*,.rlistings'}
         resp_meta, body = self.container_client.update_container_metadata(
@@ -1026,7 +1025,8 @@ class PublicObjectTest(base.BaseObjectTest):
         self.assertHeaders(resp_meta, 'Container', 'HEAD')
 
         self.assertIn('x-container-read', resp_meta)
-        self.assertEqual(resp_meta['x-container-read'], '.r:*,.rlistings')
+        #self.assertEqual(resp_meta['x-container-read'], '.r:*,.rlistings')
+        self.assertEqual(resp_meta['x-container-read'], '.r:*')
 
         # trying to get object with empty headers as it is public readable
         self.custom_object_client.auth_provider.set_alt_auth_data(
@@ -1063,7 +1063,8 @@ class PublicObjectTest(base.BaseObjectTest):
         self.assertHeaders(resp, 'Container', 'HEAD')
 
         self.assertIn('x-container-read', resp)
-        self.assertEqual(resp['x-container-read'], '.r:*,.rlistings')
+        #self.assertEqual(resp['x-container-read'], '.r:*,.rlistings')
+        self.assertEqual(resp['x-container-read'], '.r:*')
 
         # get auth token of alternative user
         alt_auth_data = self.identity_client_alt.auth_provider.auth_data

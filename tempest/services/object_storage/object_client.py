@@ -60,6 +60,7 @@ class ObjectClient(rest_client.RestClient):
         url = "%s/%s" % (str(container), str(object_name))
         if params:
             url += '?%s' % urllib.urlencode(params)
+	    raise Exception((url,params))
         resp, body = self.delete(url, headers={})
         self.expected_success([200, 204], resp.status)
         return resp, body
