@@ -188,7 +188,7 @@ class AccountTest(base.BaseObjectTest):
         # list containers combining marker and limit param
         # result are always limitated by the limit whatever the marker
         for marker in random.choice(self.containers):
-            limit = random.randint(0, self.containers_count - 1)
+            limit = random.randint(1, self.containers_count - 1)
             params = {'marker': marker,
                       'limit': limit}
             resp, container_list = \
@@ -206,7 +206,7 @@ class AccountTest(base.BaseObjectTest):
         resp, container_list = self.account_client.list_account_containers(
             params=params)
         self.assertHeaders(resp, 'Account', 'GET')
-        self.assertEqual(len(container_list), limit))
+        self.assertEqual(len(container_list), limit)
 
     @test.attr(type='smoke')
     def test_list_containers_with_limit_and_marker_and_end_marker(self):
